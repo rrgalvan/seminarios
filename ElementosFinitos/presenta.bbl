@@ -1,0 +1,25 @@
+\begin{thebibliography}{Cia78}
+
+\bibitem[All07]{allaire_numerical_2007}
+Grégoire Allaire.
+\newblock {\em Numerical analysis and optimization an introduction to
+  mathematical modelling and numerical simulation}.
+\newblock Oxford University Press, Oxford, 2007.
+
+\bibitem[BS08]{Brenner-Scott:08}
+S.C. Brenner and L.R. Scott.
+\newblock {\em The Mathematical Theory of Finite Element Methods}.
+\newblock Texts in Applied Mathematics. Springer-Verlag, third edition edition,
+  2008.
+
+\bibitem[Cia78]{Ciarlet:78}
+P.G. Ciarlet.
+\newblock {\em The Finite Element Method for Elliptic Problems}.
+\newblock North-Holland, Amsterdam, 1978.
+
+\bibitem[EG04]{Ern-Guermond:04}
+A.~Ern and J.-L. Guermond.
+\newblock {\em Theory and Practice of Finite Elements}.
+\newblock Springer, 2004.
+
+\end{thebibliography}

@@ -10,7 +10,8 @@
 
 \usepackage{PDE} % mis definiciones
 \renewcommand{\uu}{u}
-\newcommand{\NT}{N}
+\newcommand{\Nt}{N}
+\newcommand{\Np}{{N_p}}
 \newcommand{\interior}[1]{\mathring{#1}}
 \newcommand{\refelem}{\widehat}
 
@@ -62,6 +63,10 @@
   \end{frame}
 }
 \AtBeginSubsection{\frame{\subsectionpage}}
+
+% Color for hyperlinks.....
+\definecolor{links}{HTML}{0A5B31}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
 %...........................................
 
 
@@ -285,7 +290,7 @@
   Supondremos:
   \bigskip
   \begin{itemize}\itemsep1em
-  \item  $\Omega=\cup_{i=1}^\NT K_i$, \quad
+  \item  $\Omega=\cup_{i=1}^\Nt K_i$, \quad
     $\interior{K_i}\cap\interior{K_j}=\emptyset$, $i\neq j$,
     \quad $K_i,K_j\in\Th$,
     \begin{flushright}
@@ -314,25 +319,54 @@
 
 \subsection{Aproximación local por polinomios}
 
-\begin{frame}{Definición abstracta}
-  \begin{definition}
+\begin{frame}{Definición abstracta de elemento finito}
+  \begin{definition}[Ciarlet~\cite{Ciarlet:78}, Ern-Guermond~\cite{Ern-Guermond:04}]
     Un \textbf{\alert{Elemento finito}} en $\Rset^n$ es un triple
     $(K,P,\Sigma)$ tal que:
     \smallskip
     \begin{itemize}
-    \item \alert{$K$}: compacto de $\Rset^n$ con interior no vac\'io y
+    \item[(i)] \alert{$K$} = compacto de $\Rset^n$ con interior no vac\'io y
       frontera lipschtiziana
-    \item \alert{$P$}: espacio de polinomios en $K$ de dimensi\'on $N_P$
-    \item $\alert{\Sigma}=\{L_1,L_2,...,L_{N_P}\} \subset V'$
-      ($L_i:P\to\Rset$ lineales y continuas) tales que la
-      aplicaci\'on lineal
+    \item[(ii)] \alert{$P$} = espacio de polinomios en $K$ de dimensi\'on $\Np$
+    \item[(iii)] $\alert{\Sigma}=\{\sigma_1,\sigma_2,...,\sigma_{\Np}\} \subset V'$
+      tales que la aplicaci\'on lineal
       \begin{align*}
-        L: P& \longrightarrow \mathbb{R}^{N_P},\\
-        q& \longmapsto L(q)=(L_1(q),L_2(q),...,L_{N_P}(q))
+        \sigma: P& \longrightarrow \mathbb{R}^{\Np},\\
+        q& \longmapsto \sigma(q)=(\sigma_1(q), \sigma_2(q),..., \sigma_{\Np}(q))
       \end{align*}
-      es biyectiva. A los elementos de $\Sigma$ se les llama \textit{grados de libertad}.
+      es biyectiva. Las formas lineales
+      $\{\sigma_1,\sigma_2,...,\sigma_{\Np}\}$ se llaman
+      \textit{grados de libertad} locales
     \end{itemize}
   \end{definition}
+
+  \par\bigskip
+  \scriptsize \textbf{Observación}:
+  \par\medskip
+  En ocasiones (por
+  ejemplo~\cite{Ciarlet:78}) la biyectividad de $\sigma$ no se incluye
+  en la definición de elemento finito. En ese caso, es una propiedad
+  adicional y a los elementos que la verifican se les llama
+  ``unisolventes''.
+\end{frame}
+
+\begin{frame}{Ejemplos de elementos finitos}
+  \begin{example}[Elemento finito de Lagrange]
+    Fijados $\Np$ puntos $a_1,...,a_\Np\in K$ (llamados
+    <<\textbf{nodos}>>), se define
+    \vspace{-0.3em}
+    $$
+    \sigma_i(p) = p(a_i), \quad i=1,...,\Np
+    $$
+    \vspace{-1.2em}
+    \begin{itemize}
+    \item Existe una base $\{p_1,...,p_\Np\}$ de $P$ tal que $\sigma_i(p_j)=p_j(a_i)=\delta_{ij}$
+      \begin{center}
+        \scriptsize
+        $\hookrightarrow$ ``funciones de forma (\textit{shape functions}) locales''
+      \end{center}
+    \end{itemize}
+  \end{example}
 \end{frame}
 
 \bibliography{biblio}{}
