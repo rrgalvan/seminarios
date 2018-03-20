@@ -1,0 +1,341 @@
+\documentclass[10pt,leqno]{beamer}
+\usecolortheme{UCA}
+\usetheme{Warsaw}
+\usepackage[default, scale=1.0]{lato}
+\usepackage{amssymb,amsmath}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+\usepackage{PDE} % mis definiciones
+\renewcommand{\uu}{u}
+\newcommand{\NT}{N}
+\newcommand{\interior}[1]{\mathring{#1}}
+\newcommand{\refelem}{\widehat}
+
+\usepackage{graphicx}
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={},
+            pdftitle={},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+
+%\usepackage{pifont} % checked mark
+%\newcommand{\cmark}{\ding{51}}%
+%\newcommand{\xmark}{\ding{55}}%
+
+
+% ..........................................
+% Bemer configuragion
+% .........................................
+% Quitar pie de página ....................
+%gets rid of bottom navigation bars
+\setbeamertemplate{footline}[frame number]{}
+
+
+%gets rid of bottom navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+%empty header
+\setbeamertemplate{headline}{}
+
+%gets rid of footer
+%will override 'frame number' instruction above
+%comment out to revert to previous/default definitions
+\setbeamertemplate{footline}{}
+
+\AtBeginSection[]{
+  %.............
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+\AtBeginSubsection{\frame{\subsectionpage}}
+%...........................................
+
+
+\title{El Método de los Elementos Finitos}
+\author{Rafa Rodríguez Galván}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{frame}{Plan}
+
+\begin{enumerate}
+%\def\labelenumi{\arabic{enumi}.}
+\setlength\itemsep{1em}
+\item Formulación débil de EDP
+\item Buen planteamiento del problema
+\item Aproximación mediante el método de Galerkin
+\item Estimaciones de error para el método de Galerkin
+\item El método de los elementos finitos
+\item Implementación en el ordenador
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Conocimientos previos}
+  Lo ideal sería tener una idea muy general sobre...
+  \begin{itemize}
+  \item Qué es un espacio de Hilbert
+  \item Qué es la formulación variacional de una EDP
+  \end{itemize}
+% Dada una función \(f:\mathbb{R}\to \mathbb{R}\),
+% \begin{block}{}
+% \vspace{-1ex}
+%   \[\mbox{hallar } \alpha\in\mathbb{R} \mbox{ tal que } f(\alpha)=0\]
+% \end{block}
+\end{frame}
+
+\section{Formulación variacional de EDP}
+
+\begin{frame}{Formulación variacional}
+  Un problema modelo: dado $\Omega\subset\mathbb{R}^n$, hallar
+  $u\in V:=C^2(\Omega)$ tal que
+  \begin{block}{}
+    \vspace{-1.1ex}
+    \begin{equation*}
+      \left\{
+        \label{eq:1}
+        \begin{aligned}
+          u - \Delta u &= f \quad\text{en } \Omega,  \\
+          u | _{\partial\Omega} =& 0.
+        \end{aligned}
+      \right.
+    \end{equation*}
+  \end{block}
+  Multiplicando por $v\in C^2(\Omega)$ e integrando por partes:
+  \begin{block}{}
+    \vspace{-1.1ex}
+    \begin{equation*}
+      \label{eq:2}
+      \int_\Omega u\,v + \int_\Omega\grad u \grad v = \int_\Omega f\,v
+      \quad\forall v\in V.
+    \end{equation*}
+  \end{block}
+  \textbf{Problema variacional}: hallar
+  $u\in V:= \{u\in C^1(\Omega),\ u|_{\partial\Omega}=0\}$ tal que
+  \begin{block}{}
+    \vspace{-2.9ex}
+    \begin{equation}
+      \label{eq:pb.variacional}
+      \tag{P}
+    a(u,v)= F(v) \quad \forall v \in V,
+  \end{equation}
+  \end{block}
+  \vspace{1ex} donde
+  $\displaystyle a(u,v)=\int_\Omega u\,v + \int_\Omega\grad u \grad v$
+  \quad y \quad $\displaystyle F(v) = \int_\Omega f\,v$.
+  \begin{itemize}
+  \item Problema \textbf{mal planteado} en $V\sim C^2(\Omega)$ o
+    $V \sim C^1(\Omega)$.
+  \item \textbf{Idea}: tomar un espacio más amplio (que contiene a $C^1(\Omega)$):
+  \begin{block}{}
+    \vspace{-1ex}
+    $$
+    V:=H_0^1(\Omega).
+    $$
+  \end{block}
+\end{itemize}
+\end{frame}
+
+\section{Buen planteamiento de problemas de contorno}
+\label{sec:buen-plant-de}
+
+\begin{frame}{Buen planteamiento de la formulación variacional}
+  \textbf{Problema bien planteado} en el sentido de Hadamard:
+  \begin{itemize}
+  \item Existe una única solución
+  \item Depende continuamente de los datos
+  \end{itemize}
+
+  \begin{block}{Teorema \textbf{Lax-Milgram}}
+    Condición suficiente para que el
+    problema~(\ref{eq:pb.variacional}) esté bien planteado:
+    \begin{itemize}
+    \item $V$ espacio de Hilbert
+    \item $a(\cdot,\cdot)$ bilineal, continua, coerciva
+    \item $F(\cdot)$ lineal continua (es decir, $F\in V'$)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\section{Método de Galerkin}
+\label{sec:buen-plant-de-1}
+
+\begin{frame}{Problema aproximado}
+  Dado $\Vh\subset V$ \textbf{finito-dimensional}, hallar $\uh\in\Vh$ tal que:
+  \begin{block}{}
+    \vspace{-2.5ex}
+    \begin{equation}
+      \label{eq:pb.aproximado}
+      \tag{$P_h$}
+      a(\uh,v)= F(v) \quad \forall \vh \in \Vh.
+    \end{equation}
+  \end{block}
+  Resultados~(\cite{Brenner-Scott:08}, secciones 2.5, 2.8):
+  \begin{itemize}
+  \item Teorema: $\exists!$ solución de (\ref{eq:pb.aproximado})
+  \item Proposición: el error es $a$--ortogonal a $\Vh$
+  \item Lema de Céa: $\uh$ minimiza el error (en norma de energía, o
+    sea norma en $V$):
+    $$\norm[V]{u-\uh} \le \frac{C}{\alpha} min_{v\in\Vh}\norm[V]{u-v},$$
+    siendo
+    \begin{itemize}
+    \item $C$ la constante de continuidad y
+    \item $\alpha$ la constante de coercividad.
+    \item Si $C$ ``grande'' o $\alpha$ ``pequeño'' $\Rightarrow$ problemas!!
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Método de Galerkin}
+  Dado $\Vh\subset V$ \textbf{finito-dimensional}, hallar $\uh\in\Vh$ tal que:
+  \begin{block}{}
+    \vspace{-2.5ex}
+    \begin{equation}
+      \label{eq:pb.aproximado2}
+      \tag{$P_h$}
+      a(\uh,v)= F(v) \quad \forall \vh \in \Vh.
+    \end{equation}
+  \end{block}
+
+  \textbf{Idea}:
+  \begin{itemize}
+  \item Fijar una base $\{\varphi_i\}_{i=1}^N$ de $\Vh$.
+  \item Entonces,~(\ref{eq:pb.aproximado2}) se convierte en un sistema
+    lineal de ecuaciones
+    $$A\, U = b$$
+  \item El vector $U$ contiene las coordenadas de la solución
+    aproximada $\uh$ en la base $\{\varphi_i\}_{i=1}^N$:
+    $$
+    \uh(\xx) = \sum_{i=1}^N U_i \varphi_i(\xx)\quad\forall\xx\in\Omega.
+    $$
+  \item $\exists!$ solución del sistema anterior
+  \end{itemize}
+\end{frame}
+
+\section{El método de los elementos Finitos}
+
+\begin{frame}{El método de los elementos Finitos}
+  \begin{center}
+    % El método de los elementos Finitos
+    % \\
+    \includegraphics[width=0.99\linewidth]{mef}
+  \end{center}
+  \bigskip
+  \textbf{Bibliografía}
+  \small
+  \begin{itemize}
+  \item Ern-Guermond~\cite{Ern-Guermond:04}, capítulo 1
+  \item Brenner-Scott~\cite{Brenner-Scott:08}, capítulo 3
+  \item G. Allaire~\cite{allaire_numerical_2007}, capítulo 6
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{El método de los elementos Finitos}
+  \vspace{-1.5em}
+  \begin{flushright}
+    \includegraphics[width=0.4\linewidth]{mef}
+  \end{flushright}
+  \vspace{-3em}
+
+  {\large \textbf{Idea}}:
+  \bigskip
+  \begin{enumerate}\itemsep1em
+  \item Definir una <<\alert{\textit{triangulación}}>> (un mallado de $\Omega$)
+    $$\Th=\{K_i\}_{i=1}^N \quad\text{ tal que }\quad
+    \Omega\simeq\cup_{i=1}^n K_i
+    $$
+  \item En cada \textit{elemento}, $K$, aproximar la solución por un
+    \alert{polinomio $\vh^K$}
+  \item Definir un \alert{espacio global $\Vh$} finito-dimensional tal que
+    \begin{flushright}
+      \scriptsize (usualmente, $\Vh\subset C(\overline\Omega)$)
+    \end{flushright}
+    $$
+    \forall \vh\in\Vh, \quad \vh|_K = \vh^K
+    $$
+  \item Aproximar la solución en $\Vh$ mediante el método de \alert{Galerkin}
+
+  \item Lema de Céa $+$ Error en interpolación polinómica
+    \begin{flushright}
+      $\Rightarrow$ \alert{Estimaciones de error} para el MEF.
+    \end{flushright}
+  \end{enumerate}
+\end{frame}
+
+\subsection{Mallados o <<triangulaciones>>}
+
+\begin{frame}{Mallado de $\Omega$}
+  Supondremos:
+  \bigskip
+  \begin{itemize}\itemsep1em
+  \item  $\Omega=\cup_{i=1}^\NT K_i$, \quad
+    $\interior{K_i}\cap\interior{K_j}=\emptyset$, $i\neq j$,
+    \quad $K_i,K_j\in\Th$,
+    \begin{flushright}
+      \scriptsize
+      donde $K_i$... \llaveizq{
+        1d: intervalos
+        \\[0.7ex]
+        2d: polígonos (usualmente triángulos o rectángulos)
+        \\[0.7ex]
+        3d: poliedros (usualmente tetraedros o prismas)
+        }
+    \end{flushright}
+  \item Todo $K\in\Th$ se puede obtener como transformación afín de un
+    \alert{elemento de referencia} $\refelem K$:
+    $$T_K: \refelem K \to K$$
+
+  \item Hipótesis: <<\alert{elementos geométricamente conformes}>>\footnote{Ver e.g~\cite{Ern-Guermond:04}. Hipótesis fundamental para elementos finitos continuos}
+    Dados dos elementos $K_i$, $K_j$ ($i\neq j$), entonces $K_i\cap K_j$ es:
+    \begin{itemize}
+    \item O bien vacío
+    \item O bien un vértice, un lado o una cara común
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\subsection{Aproximación local por polinomios}
+
+\begin{frame}{Definición abstracta}
+  \begin{definition}
+    Un \textbf{\alert{Elemento finito}} en $\Rset^n$ es un triple
+    $(K,P,\Sigma)$ tal que:
+    \smallskip
+    \begin{itemize}
+    \item \alert{$K$}: compacto de $\Rset^n$ con interior no vac\'io y
+      frontera lipschtiziana
+    \item \alert{$P$}: espacio de polinomios en $K$ de dimensi\'on $N_P$
+    \item $\alert{\Sigma}=\{L_1,L_2,...,L_{N_P}\} \subset V'$
+      ($L_i:P\to\Rset$ lineales y continuas) tales que la
+      aplicaci\'on lineal
+      \begin{align*}
+        L: P& \longrightarrow \mathbb{R}^{N_P},\\
+        q& \longmapsto L(q)=(L_1(q),L_2(q),...,L_{N_P}(q))
+      \end{align*}
+      es biyectiva. A los elementos de $\Sigma$ se les llama \textit{grados de libertad}.
+    \end{itemize}
+  \end{definition}
+\end{frame}
+
+\bibliography{biblio}{}
+\bibliographystyle{alpha}   %{plain}
+
+\end{document}
