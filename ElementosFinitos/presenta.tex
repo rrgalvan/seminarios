@@ -69,6 +69,9 @@
 \hypersetup{colorlinks,linkcolor=,urlcolor=links}
 %...........................................
 
+\usepackage{amsthm}
+\newtheorem{proposition}{Proposition}
+
 
 \title{El Método de los Elementos Finitos}
 \author{Rafa Rodríguez Galván}
@@ -350,23 +353,38 @@
   ``unisolventes''.
 \end{frame}
 
-\begin{frame}{Ejemplos de elementos finitos}
-  \begin{example}[Elemento finito de Lagrange]
-    Fijados $\Np$ puntos $a_1,...,a_\Np\in K$ (llamados
-    <<\textbf{nodos}>>), se define
-    \vspace{-0.3em}
+\begin{frame}{Elementos finitos de Lagrange}
+
+  \begin{definition} $(K,P,\Sigma)$ es un \alert{elemento finito de
+      Lagrange} si sus grados de libertad están definidos de las siguiente
+    forma:
     $$
-    \sigma_i(p) = p(a_i), \quad i=1,...,\Np
+    \sigma_i(p) := p(a_i), \quad \forall i=1,...,\Np,
     $$
-    \vspace{-1.2em}
-    \begin{itemize}
-    \item Existe una base $\{p_1,...,p_\Np\}$ de $P$ tal que $\sigma_i(p_j)=p_j(a_i)=\delta_{ij}$
-      \begin{center}
-        \scriptsize
-        $\hookrightarrow$ ``funciones de forma (\textit{shape functions}) locales''
-      \end{center}
-    \end{itemize}
-  \end{example}
+    donde $\{a_1,...,a_\Np\} \subset K$ es un conjunto de puntos
+    llamados <<\textbf{nodos}>>
+  \end{definition}
+
+\begin{proposition}
+  \begin{itemize}
+  \item Existe una base $\{p_1,...,p_\Np\}$ de $P$ tal que
+    $\sigma_i(p_j)=\delta_{ij}$
+    \begin{flushright} \scriptsize $\hookrightarrow$  definición: funciones de forma
+      (``\textit{shape functions}'') locales
+    \end{flushright}
+  \end{itemize}
+\end{proposition}
+
+  \begin{itemize}
+  \item Demostración 1: Sean $p_i(x)$ las funciones base de
+    interpolación de Lagrange en el soporte
+    $\{a_1,\dots,a_\Np\}$. Entones
+    $\sigma_i(p_j)=p_j(a_i)=\delta_{ij}$.
+  \item Demostración 2: Consecuencia directa de la biyectividad de $\sigma$.
+  \end{itemize}
+
+  \textbf{Observación}: La demostración~2 significa que \alert{esta proposición es válida para
+  cualquier elemento finito} (no necesariamente de Lagrange).
 \end{frame}
 
 \bibliography{biblio}{}
