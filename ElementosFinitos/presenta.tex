@@ -366,25 +366,57 @@
   \end{definition}
 
 \begin{proposition}
-  \begin{itemize}
+  \begin{enumerate}
   \item Existe una base $\{p_1,...,p_\Np\}$ de $P$ tal que
     $\sigma_i(p_j)=\delta_{ij}$
-    \begin{flushright} \scriptsize $\hookrightarrow$  definición: funciones de forma
-      (``\textit{shape functions}'') locales
+    \begin{flushright} \scriptsize $\hookrightarrow$  \alert{funciones base} locales
+      (``\textit{local shape functions}'') del elemento finito
     \end{flushright}
-  \end{itemize}
+  \item Todo $p\in P$ verifica: $p(x)=\sum_{i=1}^\Np \sigma_i(p) p_i(x)$.
+  \end{enumerate}
 \end{proposition}
 
+\begin{footnotesize}
   \begin{itemize}
   \item Demostración 1: Sean $p_i(x)$ las funciones base de
     interpolación de Lagrange en el soporte
     $\{a_1,\dots,a_\Np\}$. Entones
-    $\sigma_i(p_j)=p_j(a_i)=\delta_{ij}$.
+    $\sigma_i(p_j)=p_j(a_i)=\delta_{ij}$
   \item Demostración 2: Consecuencia directa de la biyectividad de $\sigma$.
   \end{itemize}
+\end{footnotesize}
 
   \textbf{Observación}: La demostración~2 significa que \alert{esta proposición es válida para
   cualquier elemento finito} (no necesariamente de Lagrange).
+\end{frame}
+
+\begin{frame}{Elementos finitos de Legendre}
+  Polinomios de Legendre:
+  \begin{itemize}
+  \item Definición recursiva:
+    \begin{footnotesize}
+      \begin{align*}
+        L_0(x)=1, \quad L_1(x)=x \quad L_{k}(x) = \frac{2k-1}k L_{k-1}(x) - \frac{k-1}{k} L_{k-2}(x)
+      \end{align*}
+    \end{footnotesize}
+  \item $\{L_0,L_1,\dots,L_n\}$ base de $\mathbb{P}_n=\{\text{polinomios de grado } n\}$
+  \item Ortogonalidad en $\refelem K=[-1,1]$:
+    \begin{footnotesize}
+      $$\int_{-1}^1 L_i(x) L_j(x) = 2/(2i+1)\delta_{ij}$$
+    \end{footnotesize}
+  \end{itemize}
+
+  Elementos finitos con bases de Legendre
+  \begin{definition} $(K,P,\Sigma)$ es un \alert{elemento finito de
+      Legendre} si sus grados de libertad están definidos de la
+    siguiente forma:
+    $$
+    \sigma_i(p) := \alpha_i, \quad \forall i=0,...,\Np,
+    $$
+    donde $(\alpha_0,...,\alpha_\Np) \in\Rset^{\Np+1}$ son las coordenadas
+    de $p(x)$ en la base de Legendre $\{L_0(x),...,L_\Np(x)\}$
+  \end{definition}
+
 \end{frame}
 
 \bibliography{biblio}{}
