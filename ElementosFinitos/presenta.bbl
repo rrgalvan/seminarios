@@ -1,4 +1,4 @@
-\begin{thebibliography}{Cia78}
+\begin{thebibliography}{SSD04}
 
 \bibitem[All07]{allaire_numerical_2007}
 Grégoire Allaire.
@@ -21,5 +21,10 @@ P.G. Ciarlet.
 A.~Ern and J.-L. Guermond.
 \newblock {\em Theory and Practice of Finite Elements}.
 \newblock Springer, 2004.
+
+\bibitem[SSD04]{solin_higher-order_2004}
+Pavel Solin, Karel Segeth, and Ivo Dolezel.
+\newblock {\em Higher-order finite element methods}.
+\newblock Chapman \& Hall/CRC, Boca Raton, FL, 2004.
 
 \end{thebibliography}

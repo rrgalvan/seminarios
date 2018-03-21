@@ -330,15 +330,15 @@
     \begin{itemize}
     \item[(i)] \alert{$K$} = compacto de $\Rset^n$ con interior no vac\'io y
       frontera lipschtiziana
-    \item[(ii)] \alert{$P$} = espacio de polinomios en $K$ de dimensi\'on $\Np$
-    \item[(iii)] $\alert{\Sigma}=\{\sigma_1,\sigma_2,...,\sigma_{\Np}\} \subset V'$
+    \item[(ii)] \alert{$P$} = espacio de polinomios en $K$ de dimensi\'on $\Np+1$
+    \item[(iii)] $\alert{\Sigma}=\{\sigma_0,\sigma_1,...,\sigma_{\Np}\} \subset V'$
       tales que la aplicaci\'on lineal
       \begin{align*}
-        \sigma: P& \longrightarrow \mathbb{R}^{\Np},\\
-        q& \longmapsto \sigma(q)=(\sigma_1(q), \sigma_2(q),..., \sigma_{\Np}(q))
+        \sigma: P& \longrightarrow \mathbb{R}^{\Np+1},\\
+        q& \longmapsto \sigma(q)=(\sigma_0(q), \sigma_1(q),..., \sigma_{\Np}(q))
       \end{align*}
       es biyectiva. Las formas lineales
-      $\{\sigma_1,\sigma_2,...,\sigma_{\Np}\}$ se llaman
+      $\{\sigma_0,\sigma_1,...,\sigma_{\Np}\}$ se llaman
       \textit{grados de libertad} locales
     \end{itemize}
   \end{definition}
@@ -359,65 +359,172 @@
       Lagrange} si sus grados de libertad están definidos de las siguiente
     forma:
     $$
-    \sigma_i(p) := p(a_i), \quad \forall i=1,...,\Np,
+    \sigma_i(p) := p(a_i), \quad \forall i=0,...,\Np,
     $$
-    donde $\{a_1,...,a_\Np\} \subset K$ es un conjunto de puntos
+    donde $\{a_0,...,a_\Np\} \subset K$ es un conjunto de puntos
     llamados <<\textbf{nodos}>>
   \end{definition}
-
+\pause
 \begin{proposition}
   \begin{enumerate}
-  \item Existe una base $\{p_1,...,p_\Np\}$ de $P$ tal que
+  \item Existe una base $\{p_0,...,p_\Np\}$ de $P$ tal que
     $\sigma_i(p_j)=\delta_{ij}$
     \begin{flushright} \scriptsize $\hookrightarrow$  \alert{funciones base} locales
       (``\textit{local shape functions}'') del elemento finito
     \end{flushright}
-  \item Todo $p\in P$ verifica: $p(x)=\sum_{i=1}^\Np \sigma_i(p) p_i(x)$.
+  \item Todo $p\in P$ verifica: $p(x)=\sum_{i=0}^\Np \sigma_i(p) p_i(x)$
+    \begin{flushright} \scriptsize $\hookrightarrow$ Es decir
+      \alert{$(\sigma_0(p),\dots,\sigma_\Np(p))$ = coordenadas de
+        $p(x)$ }en la base $\{p_0,...,p_\Np\}$
+    \end{flushright}
   \end{enumerate}
 \end{proposition}
 
 \begin{footnotesize}
-  \begin{itemize}
-  \item Demostración 1: Sean $p_i(x)$ las funciones base de
-    interpolación de Lagrange en el soporte
-    $\{a_1,\dots,a_\Np\}$. Entones
-    $\sigma_i(p_j)=p_j(a_i)=\delta_{ij}$
-  \item Demostración 2: Consecuencia directa de la biyectividad de $\sigma$.
-  \end{itemize}
+  \begin{enumerate}
+  \item Demostración 1: Tomar $\{p_i\}$ = base de interpolación de
+    Lagrange en el soporte $\{a_i\}$ % Entones
+    % $\sigma_i(p_j)=p_j(a_i)=\delta_{ij}$
+    \par
+    Demostración 2: Consecuencia directa de la biyectividad de $\sigma$
+    \item
+    Unicidad de interpolación de valores $\sigma_i(p)$ en nodos $a_i$
+  \end{enumerate}
 \end{footnotesize}
 
-  \textbf{Observación}: La demostración~2 significa que \alert{esta proposición es válida para
-  cualquier elemento finito} (no necesariamente de Lagrange).
+\textbf{Observación}: \alert{esta proposición es válida para
+  cualquier elemento finito} (no necesariamente de Lagrange)
+\small
+$\Leftarrow$ demostración~2
 \end{frame}
 
-\begin{frame}{Elementos finitos de Legendre}
-  Polinomios de Legendre:
+\begin{frame}{Familia de elementos finitos de \textbf{Legendre}}
+  \small
   \begin{itemize}
-  \item Definición recursiva:
+  \item Polinomios de Legendre (definición recursiva):
     \begin{footnotesize}
       \begin{align*}
-        L_0(x)=1, \quad L_1(x)=x \quad L_{k}(x) = \frac{2k-1}k L_{k-1}(x) - \frac{k-1}{k} L_{k-2}(x)
+        L_0(x)=1, \quad L_1(x)=x,
+        \quad L_{k}(x) = \frac{2k-1}k L_{k-1}(x) - \frac{k-1}{k} L_{k-2}(x), \quad k\ge 2
       \end{align*}
     \end{footnotesize}
-  \item $\{L_0,L_1,\dots,L_n\}$ base de $\mathbb{P}_n=\{\text{polinomios de grado } n\}$
-  \item Ortogonalidad en $\refelem K=[-1,1]$:
+  \item $\{L_0,L_1,\dots,L_n\}$ base de
+    $\mathbb{P}_n=\{\text{polinomios de grado } n\}$
+  \item \alert{Base jerárquica}:
+    $\{L_0,L_1,\dots,L_n\} \subset \{L_0,L_1,\dots,L_n, L_{n+1}\}$
+  \item \alert{Ortogonalidad} en $\refelem K=[-1,1]$:
     \begin{footnotesize}
       $$\int_{-1}^1 L_i(x) L_j(x) = 2/(2i+1)\delta_{ij}$$
     \end{footnotesize}
+  \item Extensión a intervalo $K$ arbitrario mediante la transformación afín
+    $$T_K : \refelem K \to K$$
+  \item Generalización a $K\subset\Rset^n$~\cite{solin_higher-order_2004}
   \end{itemize}
-
-  Elementos finitos con bases de Legendre
+  \vspace{-0.3em}
+  \normalsize
   \begin{definition} $(K,P,\Sigma)$ es un \alert{elemento finito de
-      Legendre} si sus grados de libertad están definidos de la
-    siguiente forma:
+      Legendre} si sus grados de libertad se definen como:
     $$
     \sigma_i(p) := \alpha_i, \quad \forall i=0,...,\Np,
     $$
-    donde $(\alpha_0,...,\alpha_\Np) \in\Rset^{\Np+1}$ son las coordenadas
-    de $p(x)$ en la base de Legendre $\{L_0(x),...,L_\Np(x)\}$
+    donde $(\alpha_0,...,\alpha_\Np) \in\Rset^{\Np+1}$ son las
+    \vspace{-0.3em}
+    \begin{center}
+      \textbf{coordenadas} de $p(x)$ en la \textbf{base de Legendre}
+      $\{L_0(x),...,L_\Np(x)\}$
+    \end{center}
   \end{definition}
 
 \end{frame}
+
+\begin{frame}{Familia de elementos finitos de \textbf{Lobatto}}
+  \small
+  \begin{itemize}
+  \item Polinomios de Lobatto (definición recursiva):
+    \begin{footnotesize}
+      \begin{align*}
+        l_0(x)=\frac{1-x}2, \quad l_1(x)=\frac{1+x}2,
+        \quad l_{k}(x) = \frac 1{\norm[L^2(\Omega)]{L_{k-1}}} \int_{-1}^x L_{k-1}(t) dt, \quad k\ge 2
+      \end{align*}
+    \end{footnotesize}
+  \item $\{l_0,l_1,\dots,l_n\}$ base jerárquica de $\mathbb{P}_n$
+  \item $\forall i\ge 0:$ \quad $l_i(-1)=0$ excepto \alert{$l_0(-1)=1$},
+    \quad $l_i(1)=0$ excepto \alert{$l_1(1)=1$}
+    \begin{flushright}
+      \scriptsize
+      $\hookrightarrow$ aplicación a \alert{continuidad} entre intervalos
+    \end{flushright}
+  \item $l'_k(x)=L_{k-1}(x) \Rightarrow$ \alert{ortogonalidad de $l'_i(x)$} en
+    $\refelem K=[-1,1]$,
+    \begin{footnotesize}
+      $$\int_{-1}^1 l_i(x) l_j(x) = C\cdot \delta_{ij}, i,j\ge 2$$
+    \end{footnotesize}
+
+  \item \footnotesize Extensión a intervalo $K$ arbitrario mediante la transformación afín
+    $$T_K : \refelem K \to K$$
+  \item \footnotesize Generalización a $K\subset\Rset^n$~\cite{solin_higher-order_2004}
+  \end{itemize}
+  \vspace{-0.3em}
+  \normalsize
+  \begin{definition} $(K,P,\Sigma)$ es un \alert{elemento finito de
+      Lobatto} si sus grados de libertad son:
+    \vspace{-0.2em}
+    $$
+    \sigma_i(p) := \alpha_i, \quad \forall i=0,...,\Np,
+    $$
+    \vspace{-0.2em}
+    donde $(\alpha_0,...,\alpha_\Np) \in\Rset^{\Np+1}$ son las
+    \vspace{-0.2em}
+    \begin{center}
+      \textbf{coordenadas} de $p(x)$ en la \textbf{base de Lobatto}
+      $\{L_0(x),...,L_\Np(x)\}$
+    \end{center}
+  \end{definition}
+\end{frame}
+
+\begin{frame}{Familia de elementos finitos de \textbf{Bernstein}}
+  \small
+  \begin{itemize}
+  \item Polinomios de Bernstein
+    \begin{footnotesize}
+      $$
+      b_k^n(x) = \binom{n}{k} (1-x)^{n-k} x^k, \quad k=0,...,n
+      $$
+    \end{footnotesize}
+  \item $\{b_0^n,b_1^n,\dots,b_n^n\}$ base \emph{no jerárquica} pero
+    \alert{positiva} de $\mathbb{P}_n$ en $\refelem K=[0,1]$
+  \item $\forall i\ge 0:$ \quad $b_i^n(0)=0$ excepto \alert{$b_0^n(0)=1$},
+    \quad $b_i^n(1)=0$ excepto \alert{$b_n^n(1)=1$}
+    \begin{flushright}
+      \scriptsize
+      $\hookrightarrow$ aplicación a \alert{continuidad} entre intervalos
+    \end{flushright}
+
+  \item \footnotesize Extensión a intervalo $K$ arbitrario mediante la transformación afín
+    $$T_K : \refelem K \to K$$
+  \item \footnotesize Generalización a $K\subset\Rset^n$~\cite{solin_higher-order_2004}
+  \end{itemize}
+  \vspace{-0.3em}
+  \normalsize
+  \begin{definition} $(K,P,\Sigma)$ es un \alert{elemento finito de
+      Bernstein} si sus grados de libertad son:
+    \vspace{-0.2em}
+    $$
+    \sigma_i(p) := \alpha_i, \quad \forall i=0,...,\Np,
+    $$
+    \vspace{-0.2em}
+    donde $(\alpha_0,...,\alpha_\Np) \in\Rset^{\Np+1}$ son las
+    \vspace{-0.2em}
+    \begin{center}
+      \textbf{coordenadas} de $p(x)$ en la \textbf{base de Bernstein}
+      $\{b_0^{\Np}(x),...,b_\Np^{\Np}(x)\}$
+    \end{center}
+  \end{definition}
+\end{frame}
+
+\subsection{Espacios globales de elementos finitos}
+
+
 
 \bibliography{biblio}{}
 \bibliographystyle{alpha}   %{plain}
