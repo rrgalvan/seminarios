@@ -504,7 +504,7 @@ $\Leftarrow$ demostración~2
     $$T_K : \refelem K \to K$$
   \item \footnotesize Generalización a $K\subset\Rset^n$~\cite{solin_higher-order_2004}
   \end{itemize}
-  \vspace{-0.3em}
+ \vspace{-0.3em}
   \normalsize
   \begin{definition} $(K,P,\Sigma)$ es un \alert{elemento finito de
       Bernstein} si sus grados de libertad son:
@@ -524,7 +524,69 @@ $\Leftarrow$ demostración~2
 
 \subsection{Espacios globales de elementos finitos}
 
+\begin{frame}{Elementos discontinuos}
+  \begin{itemize}
+  \item Construir espacios de elementos discontinuos es fácil:
+  $$
+  V_h^{dc} = \{ \vh\in \alert{L^2(\Omega)},\ /\ \vh|_K \in
+  \mathbb{P}_n\ \forall K\in\Th\}
+  $$
+\item
+  Para aplicar Galerkin necesito una base.
+  \begin{itemize}
+  \item Fijamos una base local $\{\varphi_i^K\}_{i=0}^{\Np}$ en cada
+    $K\in \Th$
+  \item Definimos la base global
+    $\{\varphi_{i,k}\}_{i=1...\Np, j=1...\Nt}$ como
+    \begin{equation*}
+      \varphi_{i,k}(x) = \left\{
+        \begin{aligned}
+          \varphi_i^{K_k} (x) &\quad \text{si } x\in K_k \\
+          0 &\quad \text{en otro caso}
+        \end{aligned}
+      \right.
+    \end{equation*}
+  \end{itemize}
+\item Ventaja: simplicidad, más fácil el cálculo paralelo
+\item Inconveniente método no conforme, es decir:
+  $$\Vh\not\subset H^1(\Omega)$$
+  luego
+  $$
+  \Vh \not\subset V\subset H^1(\Omega)
+  $$
+ luego \textbf{no} se puede aplicar \textbf{directamente} el \textbf{método de Galerkin}
+\end{itemize}
+\end{frame}
 
+\begin{frame}{Elementos continuos}
+  \begin{itemize}
+  \item Construir espacios de elementos discontinuos es más difícil:
+  $$
+  V_h^{dc} = \{ \vh\in \alert{C(\Omega)},\ /\ \vh|_K \in
+  \mathbb{P}_n\ \forall K\in\Th\}
+  $$
+\item
+  Para aplicar Galerkin necesito una base.
+  \begin{itemize}
+  \item Fijamos una base local $\{\varphi_i^K\}_{i=0}^{\Np}$ en cada
+    $K\in \Th$
+  \item Definimos la base global
+    $\{\varphi_{i,k}\}_{i=1...\Np, j=1...\Nt}$ como
+    \begin{equation*}
+      \varphi_{i,k}(x) = \left\{
+        \begin{aligned}
+          \varphi_i^{K_k} (x) &\quad \text{si } x\in K_k \\
+          0 &\quad \text{en otro caso}
+        \end{aligned}
+      \right.
+    \end{equation*}
+  \item \alert{Exigimos que la base global sea \textbf{continua}}
+  \end{itemize}
+\item Inconveniente:  más difícil construir las funciones base, cálculo paralelo más complejo
+\item Ventaja: método conforme, puede aplicar directamente el
+  \textbf{método de Galerkin}
+\end{itemize}
+\end{frame}
 
 \bibliography{biblio}{}
 \bibliographystyle{alpha}   %{plain}
