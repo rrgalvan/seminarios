@@ -62,7 +62,13 @@
   \vfill
   \end{frame}
 }
-\AtBeginSubsection{\frame{\subsectionpage}}
+\AtBeginSubsection{
+	\begin{frame}
+		\begin{beamercolorbox}[sep=8pt,center]{title}
+			\usebeamerfont{subsection}\insertsubsectionhead\par%
+		\end{beamercolorbox}
+	\end{frame}
+}
 
 % Color for hyperlinks.....
 \definecolor{links}{HTML}{0A5B31}
