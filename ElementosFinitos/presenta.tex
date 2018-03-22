@@ -1,4 +1,4 @@
-\documentclass[10pt,leqno]{beamer}
+\documentclass[9pt,leqno]{beamer}
 \usecolortheme{UCA}
 \usetheme{Warsaw}
 \usepackage[default, scale=1.0]{lato}
@@ -62,7 +62,13 @@
   \vfill
   \end{frame}
 }
-\AtBeginSubsection{\frame{\subsectionpage}}
+\AtBeginSubsection{
+	\begin{frame}
+		\begin{beamercolorbox}[sep=8pt,center]{title}
+			\usebeamerfont{subsection}\insertsubsectionhead\par%
+		\end{beamercolorbox}
+	\end{frame}
+}
 
 % Color for hyperlinks.....
 \definecolor{links}{HTML}{0A5B31}
@@ -175,7 +181,7 @@
     problema~(\ref{eq:pb.variacional}) esté bien planteado:
     \begin{itemize}
     \item $V$ espacio de Hilbert
-    \item $a(\cdot,\cdot)$ bilineal, continua, coerciva
+    \item $a(\cdot,\cdot)$ bilineal, continua, coercitiva
     \item $F(\cdot)$ lineal continua (es decir, $F\in V'$)
     \end{itemize}
   \end{block}
@@ -204,7 +210,7 @@
     siendo
     \begin{itemize}
     \item $C$ la constante de continuidad y
-    \item $\alpha$ la constante de coercividad.
+    \item $\alpha$ la constante de coercitiva.
     \item Si $C$ ``grande'' o $\alpha$ ``pequeño'' $\Rightarrow$ problemas!!
     \end{itemize}
   \end{itemize}
@@ -587,6 +593,20 @@ $\Leftarrow$ demostración~2
   \textbf{método de Galerkin}
 \end{itemize}
 \end{frame}
+
+\section{Implementación en el ordenador}
+
+\begin{frame}{Implementación en el ordenador}
+	
+	{\large \textbf{Fases}}:
+	\bigskip
+	\begin{enumerate}\itemsep1em
+		\item Construcción del \alert{\textit{mallado}} de nuestro problema.
+	\end{enumerate}
+\end{frame}
+
+\subsection{Construcción del mallado}
+
 
 \bibliography{biblio}{}
 \bibliographystyle{alpha}   %{plain}
